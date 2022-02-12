@@ -1,0 +1,25 @@
+*, input {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#employees-table {
+    width: 98%;
+    margin: 1%;
+    border: 1px solid black;
+}
+
+#employees-search {
+    width: 30%;
+    margin: 1%;
+    display: inline-block;
+}
+
+#employees-login-button {
+    margin: 1%;
+    float: right;
+}
+
+.login-input {
+    margin: 3%;
+    width: 94%;
+}
