@@ -22,11 +22,21 @@
 </head>
 
 <body>
-    <input class="form-control" id="employees-search" type="text" placeholder="Fitler by name or surname">
+    <!-- Filter by name or surname input -->
+    <input class="form-control" id="employees-search" type="text" placeholder="Search (press Ctrl+/ to focus)">
+
+    <!--  -->
+    <label for="dog-names">Sort by salary: </label>
+    <select class="form-select" name="dog-names" id="dog-names">
+        <option value="rigatoni">No</option>
+        <option value="dave">Asc</option>
+        <option value="pumpernickel">Desc</option>
+    </select>
 
     <!-- Login button -->
     <button id="employees-login-button" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
 
+    <!-- Employees table -->
     <table id="employees-table" class="table table-hover">
         <tr class="table-secondary">
             <th>Id</th>
@@ -38,6 +48,27 @@
         </tr>
     </table>
 
+    <!-- Table pagination bar -->
+    <nav id="employees-table-navigation" aria-label="Table navigation">
+        <ul class="pagination">
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only"></span>
+            </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only"></span>
+            </a>
+            </li>
+        </ul>
+    </nav>
+
     <!-- Login modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -46,9 +77,13 @@
                 <h5 class="modal-title" id="loginModalLabel">Login</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <input class="form-control login-input" type="text" placeholder="Username">
-                <input class="form-control login-input" type="text" placeholder="Password">
+            <div class="modal-body login-input">
+                Username:
+                <input class="form-control" type="text" placeholder="Username">
+                <div style="margin-top: 2%">
+                    Password:
+                </div>
+                <input class="form-control" type="password" placeholder="Password">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
