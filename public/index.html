@@ -25,16 +25,8 @@
     <!-- Filter by name or surname input -->
     <input class="form-control" id="employees-search" type="text" placeholder="Search (press Ctrl+/ to focus)">
 
-    <!--  -->
-    <label for="dog-names">Sort by salary: </label>
-    <select class="form-select" name="dog-names" id="dog-names">
-        <option value="rigatoni">No</option>
-        <option value="dave">Asc</option>
-        <option value="pumpernickel">Desc</option>
-    </select>
-
     <!-- Login button -->
-    <button id="employees-login-button" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+    <button id="employees-login-button" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
 
     <!-- Employees table -->
     <table id="employees-table" class="table table-hover">
@@ -77,18 +69,17 @@
                 <h5 class="modal-title" id="loginModalLabel">Login</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body login-input">
-                Username:
-                <input class="form-control" type="text" placeholder="Username">
-                <div style="margin-top: 2%">
-                    Password:
+            <form name="login" onsubmit="loginSubmit(this);">
+                <div class="mb-3">
+                    <label for="inputLogin" class="form-label">Login</label>
+                    <input type="text" class="form-control" id="inputLogin" aria-describedby="emailHelp">
                 </div>
-                <input class="form-control" type="password" placeholder="Password">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Login</button>
-            </div>
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="inputPassword">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
             </div>
         </div>
     </div>

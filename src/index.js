@@ -1,8 +1,33 @@
+const config = {
+    serverAddr: "http://localhost:8080"
+}
+
 const employees = [
   { id: 1, name: "Makar", surname: "Solomatin", role: "Software Engineer", birthday: "2000-27-04", salary: 228 },
   { id: 2, name: "Petr", surname: "Petrov", role: "Senior Software Engineer", birthday: "1990-27-04", salary: 420 },
   { id: 3, name: "Ivan", surname: "Ivanov", role: "Junior Software Engineer", birthday: "2002-31-01", salary: 1337 },
 ]
+
+function loginSubmit(event) {
+  const username = document.getElementById("inputLogin").value;
+  const password = document.getElementById("inputPassword").value;
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", `${config.serverAddr}/api/auth/login`);
+  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+  xhr.send(JSON.stringify({username, password}));
+
+  xhr.onerror = () => { alert('Ошибка соединения'); }
+  xhr.onload = () => {
+    if (xhr.status != 200) {
+      alert('Ошибка запроса');
+    } else {
+      const token = JSON.parse(xhr.response).token;
+      localStorage.setItem('employeesToken', token);
+    }
+  }
+  return true;
+}
 
 function onEmployeeClick(event) {
   const getField = className => event.getElementsByClassName(className)[0].innerHTML;
