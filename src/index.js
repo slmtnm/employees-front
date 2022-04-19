@@ -1,70 +1,132 @@
-const config = {
-    serverAddr: "http://localhost:8080"
+import { config } from "./config";
+import { loginEventListener } from "./login";
+
+// Add listener for login button
+const loginButton = document.getElementById("login-form-submit");
+loginButton.addEventListener("click", loginEventListener);
+
+// Global state
+let currentPage = 1;
+let totalPages = Infinity;
+let filter = "";
+
+// Clear styles from page buttons
+function restorePageButtons() {
+    const previousPageButton = document.getElementById("page-previous");
+    previousPageButton.style.pointerEvents = "";
+    previousPageButton.style.color = "";
+
+    const nextPageButton = document.getElementById("page-next");
+    nextPageButton.style.pointerEvents = "";
+    nextPageButton.style.color = "";
 }
 
-const employees = [
-  { id: 1, name: "Makar", surname: "Solomatin", role: "Software Engineer", birthday: "2000-27-04", salary: 228 },
-  { id: 2, name: "Petr", surname: "Petrov", role: "Senior Software Engineer", birthday: "1990-27-04", salary: 420 },
-  { id: 3, name: "Ivan", surname: "Ivanov", role: "Junior Software Engineer", birthday: "2002-31-01", salary: 1337 },
-]
-
-function loginSubmit(event) {
-  const username = document.getElementById("inputLogin").value;
-  const password = document.getElementById("inputPassword").value;
-
-  let xhr = new XMLHttpRequest();
-  xhr.open("POST", `${config.serverAddr}/api/auth/login`);
-  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-  xhr.send(JSON.stringify({username, password}));
-
-  xhr.onerror = () => { alert('Ошибка соединения'); }
-  xhr.onload = () => {
-    if (xhr.status != 200) {
-      alert('Ошибка запроса');
-    } else {
-      const token = JSON.parse(xhr.response).token;
-      localStorage.setItem('employeesToken', token);
+function updatePagination() {
+    // TODO: update total pages
+    restorePageButtons();
+    if (currentPage === 1) {
+        const previousPageButton = document.getElementById("page-previous");
+        previousPageButton.style.pointerEvents = "none";
+        previousPageButton.style.color = "black";
+    } else if (currentPage === totalPages) {
+        const nextPageButton = document.getElementById("page-next");
+        nextPageButton.style.pointerEvents = "none";
+        nextPageButton.style.color = "black";
     }
-  }
-  return true;
+    const currentPageText = document.getElementById("page-current");
+    currentPageText.textContent = currentPage;
 }
 
-function onEmployeeClick(event) {
-  const getField = className => event.getElementsByClassName(className)[0].innerHTML;
-  const employee = {
-    id: getField("employee-id"),
-    name: getField("employee-name"),
-    surname: getField("employee-surname"),
-    role: getField("employee-role"),
-    birthday: getField("employee-birthday"),
-    salary: getField("employee-salary"),
-  };
-
-  alert(Object.values(employee).toString());
-}
-
-function restoreTable(employees) {
-  let table = document.getElementById("employees-table");
-
-  for (let employee of employees) {
-      table.innerHTML += `
-        <tr onclick="onEmployeeClick(this)">
-          <td class="employee-id">${employee.id}</td>
-          <td class="employee-name">${employee.name}</td>
-          <td class="employee-surname">${employee.surname}</td>
-          <td class="employee-role">${employee.role}</td>
-          <td class="employee-birthday">${employee.birthday}</td>
-          <td class="employee-salary">${employee.salary}</td>
-        </tr>
-      `;
-  }
-}
-
-// Add Ctrl+/ handler for focusing search input
-document.addEventListener('keydown', event => {
-  if (event.ctrlKey && event.code === 'Slash') {
-    document.getElementById("employees-search").focus();
-  }
+const nextPageButton = document.getElementById("page-next");
+nextPageButton.addEventListener("click", () => {
+    currentPage++;
+    updatePagination();
+    fillTable();
 });
 
-restoreTable(employees);
+const previousPageButton = document.getElementById("page-previous");
+previousPageButton.addEventListener("click", () => {
+    currentPage--;
+    updatePagination();
+    fillTable();
+});
+
+const searchButton = document.getElementById("search-button");
+const searchInput = document.getElementById("employees-search");
+searchInput.addEventListener("keyup", ({ key }) => {
+    // uncomment to disable incremental search
+    // if (key !== "Enter") {
+    //     return;
+    // }
+
+    filter = searchInput.value;
+    currentPage = 1;
+
+    updatePagination();
+    fillTable();
+});
+
+function fillTable() {
+    const token = localStorage.getItem('token');
+
+    fetch(`${config.serverAddr}/api/employees?` + new URLSearchParams({
+        page: currentPage,
+        filter: filter,
+    }), {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+        .then(response => {
+            if (response.status != 200) {
+                throw Error("Could not fetch employees");
+            }
+            return response.json();
+        })
+        .then(employees => {
+            let table = document.getElementById("employees-table");
+            table.innerHTML = `
+                    <tr class="table-secondary">
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Role</th>
+                        <th>Birthday</th>
+                        <th>Salary</th>
+                    </tr>
+                `;
+            for (let employee of employees) {
+                table.innerHTML += `
+						<tr>
+							<td>${employee.id}</td>
+							<td>${employee.name}</td>
+							<td>${employee.surname}</td>
+							<td>${employee.role}</td>
+							<td>${employee.birthdate}</td>
+							<td>${employee.salary}</td>
+						</tr>
+					`;
+            }
+        })
+        .catch(alert);
+}
+
+window.onload = () => {
+    const loginButton = document.getElementById("employees-login-button");
+    const token = localStorage.getItem('token');
+
+    // Unauthorized
+    if (token === null) {
+        return;
+    }
+
+    loginButton.textContent = "Logout";
+    loginButton.onclick = () => {
+        localStorage.removeItem("token");
+        location.reload();
+    }
+
+    fillTable();
+    updatePagination();
+};
+

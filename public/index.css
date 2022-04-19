@@ -1,4 +1,5 @@
-*, input {
+*,
+input {
     font-family: 'Fira Sans', sans-serif;
 }
 
@@ -35,6 +36,19 @@
     margin: 1%;
 }
 
-form {
+#login-form {
     margin: 3%;
+}
+
+#login-error-msg {
+    opacity: 0;
+    color: #8a0000;
+    border: 1px solid #8a0000;
+    background-color: #e58f8f;
+    text-align: center;
+}
+
+#page-current {
+    pointer-events: none;
+    color: black;
 }
