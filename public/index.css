@@ -22,11 +22,6 @@ input {
     float: right;
 }
 
-.login-input {
-    margin: 3%;
-    width: 94%;
-}
-
 .form-select {
     width: 7em;
     display: inline-block;
@@ -51,4 +46,13 @@ input {
 #page-current {
     pointer-events: none;
     color: black;
+}
+
+#salary-link {
+    color: black;
+    font-family: 'Fira Sans', sans-serif;
+}
+
+#editModal {
+    margin: 3%;
 }

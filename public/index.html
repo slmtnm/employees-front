@@ -24,8 +24,10 @@
 </head>
 
 <body>
-    <!-- Filter by name or surname input -->
+    <!-- Filter input -->
     <input class="form-control" id="employees-search" type="text" placeholder="Filter by name/surname">
+
+    <button class="btn btn-success">New employee</button>
 
     <!-- Login button -->
     <button id="employees-login-button" type="button" class="btn btn-dark" data-bs-toggle="modal"
@@ -79,7 +81,64 @@
         </div>
     </div>
 
-    <script src="../dist/main.js"></script>
+    <!-- Edit modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                    <button id="editModalCloseButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div style="margin: 5%;">
+                    <table>
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" id="inputNameEdit" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td>Surname</td>
+                            <td><input type="text" id="inputSurnameEdit" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td>Role</td>
+                            <td><input type="text" id="inputRoleEdit" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td>Birthdate</td>
+                            <td><input type="text" id="inputBirthdateEdit" class="form-control"></td>
+                        </tr>
+                        <tr>
+                            <td>Salary</td>
+                            <td><input type="text" id="inputSalaryEdit" class="form-control"></td>
+                        </tr>
+                    </table>
+
+                    <input id="edit-form-submit" style="width: 30%; margin-top: 5%;" type="submit" value="Submit"
+                        class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="display: inline-block;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Are you sure?</h5>
+                    <button id="deleteModalCloseButton" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <button id="delete-form-submit" class="btn btn-danger" style="width: 43%; margin: 3%;">Yes</button>
+                <button class="btn btn-secondary" style="width: 43%; margin: 3%;" data-bs-dismiss="modal"
+                    aria-label="Close">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/index.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
